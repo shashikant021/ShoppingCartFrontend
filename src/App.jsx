@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AuthLayout from './components/auth/layout'
 import AuthRegister from './pages/auth/register'
@@ -16,11 +16,19 @@ import ShoppingHome from './pages/shopping-view/home'
 import ShoppingListing from './pages/shopping-view/listing'
 import CheckAuth from './components/comman/check-auth'
 import UnauthPage from './pages/unauth-page'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkAuth } from './store/auth-slice'
 
 function App() {
 
-  const isAuthenticated = false;
-  const user = null;
+  const { isAuthenticated, user, isLoading } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch])
+
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <>
