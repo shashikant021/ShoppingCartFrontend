@@ -5,10 +5,10 @@ import { Button } from '../ui/button'
 import { brandOptionsMap, categoryOptionsMap } from '@/config'
 import { Badge } from '../ui/badge'
 
-function ShoppingProductTile({ product }) {
+function ShoppingProductTile({ product, handleGetProductDetails, handleAddtoCart }) {
     return (
         <Card className='w-full max-w-sm mx-auto'>
-            <div>
+            <div onClick={() => handleGetProductDetails(product?._id)}>
                 <div className='relative'>
                     <img src={product?.image}
                         alt={product?.title}
@@ -27,17 +27,16 @@ function ShoppingProductTile({ product }) {
                     <div className='flex justify-between items-center mb-2'>
                         <span className={`${product?.salePrice > 0 ? 'line-through' : ''} text-lg font-semibold text-primary`}>
                             ${product?.price}</span>
-                        {product?.salePrice > 0 ? 
-                        <span className='text-lg font-semibold text-primary'>
-                            ${product?.salePrice}</span>
+                        {product?.salePrice > 0 ?
+                            <span className='text-lg font-semibold text-primary'>
+                                ${product?.salePrice}</span>
                             : null}
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <Button className='w-full'>Add to cart</Button>
-                </CardFooter>
             </div>
-
+            <CardFooter>
+                <Button onClick={() => handleAddtoCart(product?._id)} className='w-full'>Add to cart</Button>
+            </CardFooter>
         </Card>
     )
 }
