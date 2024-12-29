@@ -1,12 +1,11 @@
-import React from 'react'
 import { Card, CardContent, CardFooter } from '../ui/card'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
 
-function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress }) {
+function AddressCard({ addressInfo, handleDeleteAddress, handleEditAddress, setCurrentSelectedAddress }) {
     return (
         <div>
-            <Card>
+            <Card onClick={setCurrentSelectedAddress ? () => setCurrentSelectedAddress(addressInfo) : null}>
                 <CardContent className='grid gap-4 p-4'>
                     <Label>Address: {addressInfo?.address}</Label>
                     <Label>City: {addressInfo?.city}</Label>

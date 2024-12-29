@@ -6,7 +6,7 @@ import { addProductFormElements } from '@/config';
 import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addNewProduct, fetchAllProducts, editProduct, deleteProduct } from '@/store/admin/product-slice'
-import { toast, useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import AdminProductTile from '@/components/admin-view/product-tile';
 
 const initialFormData = {
@@ -43,7 +43,7 @@ function AdminProducts() {
           formData,
         })
       ).then((data) => {
-        console.log(data, "edit");
+        // console.log(data, "edit");
 
         if (data?.payload?.success) {
           dispatch(fetchAllProducts());
@@ -86,7 +86,7 @@ function AdminProducts() {
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
-  console.log(productList, uploadedImageUrl, 'productList')
+  // console.log(productList, uploadedImageUrl, 'productList')
 
   return (
     <Fragment>

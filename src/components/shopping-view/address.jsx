@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { useDispatch, useSelector } from "react-redux";
 import {
     addNewAddress,
     deleteAddress,
@@ -11,6 +10,7 @@ import AddressCard from "./address-card";
 import { useToast } from "@/hooks/use-toast";
 import { addressFormControls } from "@/config";
 import CommonForm from "../comman/form";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const initialAddressFormData = {
@@ -26,20 +26,18 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
     const [currentEditedId, setCurrentEditedId] = useState(null);
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
-    // const { addressList } = useSelector((state) => state.shopAddress);
-    const { addressList = [] } = useSelector((state) => state.address || {});
+    const  {addressList}  = useSelector((state) => state.shopAddress);
     const { toast } = useToast();
 
     function handleManageAddress(event) {
         event.preventDefault();
 
-        if (addressList.length >= 3 && currentEditedId === null) {
-            setFormData(initialAddressFormData);
+        if (addressList?.length >= 3 && currentEditedId ===null) {
+            setFormData(initialAddressFormData)
             toast({
-                title: "You can add max 3 addresses",
-                variant: "destructive",
+                title: "Maximum 3 addresses allowed",
+                variant: 'destructive',
             });
-
             return;
         }
 
@@ -59,8 +57,8 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
                         title: "Address updated successfully",
                     });
                 }
-            })
-            : dispatch(
+            }) :
+            dispatch(
                 addNewAddress({
                     ...formData,
                     userId: user?.id,
@@ -89,15 +87,15 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
         });
     }
 
-    function handleEditAddress(getCuurentAddress) {
-        setCurrentEditedId(getCuurentAddress?._id);
+    function handleEditAddress(getCurrentAddress) {
+        setCurrentEditedId(getCurrentAddress?._id);
         setFormData({
             ...formData,
-            address: getCuurentAddress?.address,
-            city: getCuurentAddress?.city,
-            phone: getCuurentAddress?.phone,
-            pincode: getCuurentAddress?.pincode,
-            notes: getCuurentAddress?.notes,
+            address: getCurrentAddress?.address,
+            city: getCurrentAddress?.city,
+            phone: getCurrentAddress?.phone,
+            pincode: getCurrentAddress?.pincode,
+            notes: getCurrentAddress?.notes,
         });
     }
 
@@ -115,7 +113,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
 
     return (
         <Card>
-            <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+            <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {addressList && addressList.length > 0
                     ? addressList.map((singleAddressItem) => (
                         <AddressCard
