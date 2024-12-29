@@ -1,6 +1,6 @@
 import { House, LogOut, Menu, ShoppingCart, UserCheck } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { Button } from '../ui/button'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +15,8 @@ import { Label } from '../ui/label'
 function MenuItems() {
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
