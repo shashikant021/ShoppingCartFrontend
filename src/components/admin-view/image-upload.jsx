@@ -10,7 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 function ProductImageUpload({ imageFile,
     setImageFile, uploadedImageUrl,
     setUploadedImageUrl, setImageLoadingState,
-    imageLoadingState, isEditMode }) {
+    imageLoadingState, isEditMode, isCustomStyling = false }) {
 
     const inputRef = useRef(null)
 
@@ -53,7 +53,7 @@ function ProductImageUpload({ imageFile,
     }, [imageFile])
 
     return (
-        <div className="w-full max-w-md mx-auto mt-4">
+        <div className={`w-full mt-4 ${isCustomStyling ? '' : 'max-w-md mx-auto'} `}>
             <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
             <div onDragOver={handleDragOver} onDrop={handleDrop} className={`${isEditMode ? 'opacity-60' : ''} border-2 border-dashed rounded-lg p-4`}>
                 <Input id='image-upload' type='file' className='hidden'
