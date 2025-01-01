@@ -16,15 +16,19 @@ import StarRatingComponent from "../comman/star-rating";
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
     const [reviewMsg, setReviewMsg] = useState("");
     const [rating, setRating] = useState(0);
+    const [canReview, setCanReview] = useState(false);
+    const [alreadyReviewed, setAlreadyReviewed] = useState(false);
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     const { cartItems } = useSelector((state) => state.shopCart);
     const { reviews } = useSelector((state) => state.shopReview);
+    const { orderList } = useSelector((state) => state.shopOrder);
 
     const { toast } = useToast();
 
+
     function handleRatingChange(getRating) {
-        console.log(getRating, "getRating");
+        // console.log(getRating, "getRating");
 
         setRating(getRating);
     }
@@ -72,6 +76,42 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     }
 
     function handleAddReview() {
+
+        const userReview = reviews.find(
+            (review) => review.userId === user.id);
+        setAlreadyReviewed(userReview);
+
+        if (userReview) {
+            toast({
+                title: "You have already reviewed this product!",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        const hasPurchased = orderList.find((order) =>
+            order.cartItems.some((item) => item.productId === productDetails._id)
+        );
+
+        if (!hasPurchased) {
+            toast({
+                title: "You need to purchase this product first!",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        setCanReview(hasPurchased);
+
+
+        if (reviewMsg.length > 200) {
+            toast({
+                title: "Review message should not exceed 200 characters",
+                variant: "destructive",
+            });
+            return;
+        }
+
         dispatch(
             addReview({
                 productId: productDetails?._id,
@@ -89,14 +129,15 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                     title: "Review added successfully!",
                 });
             }
-        });
+        })
     }
 
     useEffect(() => {
         if (productDetails !== null) dispatch(getReviews(productDetails?._id));
     }, [productDetails]);
 
-    console.log(reviews, "reviews");
+    // console.log(reviews, "reviews");
+
 
     const averageReview =
         reviews && reviews.length > 0
@@ -141,7 +182,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                             <StarRatingComponent rating={averageReview} />
                         </div>
                         <span className="text-muted-foreground">
-                            ({averageReview.toFixed(2)})
+                            ({averageReview.toFixed(1)})
                         </span>
                     </div>
                     <div className="mt-5 mb-5">
@@ -204,12 +245,10 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                                 name="reviewMsg"
                                 value={reviewMsg}
                                 onChange={(event) => setReviewMsg(event.target.value)}
-                                placeholder="Write a review..."
-                            />
+                                placeholder="Write a review..." />
                             <Button
                                 onClick={handleAddReview}
-                                disabled={reviewMsg.trim() === ""}
-                            >
+                                disabled={reviewMsg.trim() === ""} >
                                 Submit
                             </Button>
                         </div>

@@ -63,12 +63,12 @@ function ShoppingListing() {
     }
 
     function handleGetProductDetails(getCurrentProductId) {
-        console.log(getCurrentProductId)
+        // console.log(getCurrentProductId)
         dispatch(fetchProductDetails(getCurrentProductId));
     }
 
     function handleAddtoCart(getCurrentProductId, getTotalStock) {
-        console.log(cartItems);
+        // console.log(cartItems, 'cartItems');
         let getCartItems = cartItems.items || [];
 
         if (getCartItems.length) {
@@ -125,7 +125,7 @@ function ShoppingListing() {
 
     }, [productDetails])
 
-    console.log(productList, 'productListproductListproductList');
+    // console.log(productList, 'productListproductListproductList');
 
 
 
